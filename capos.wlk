@@ -2,7 +2,7 @@ import castillo.*
 import artefacto.*
 
 object rolando {
-    var hogar = castillo
+    const hogar = castillo
     const mochila = #{}
     var capacidadMaxima = 2
     const historial = []
@@ -51,6 +51,10 @@ object rolando {
         
         method capacidadMaxima() {
             return capacidadMaxima
+        }
+
+        method hogar() {
+            return hogar
         }
 
     //1.3 Saber qué artefactos tiene Rolando y el castillo

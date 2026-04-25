@@ -1,3 +1,4 @@
+import hechisos.*
 import capos.*
 import castillo.*
 import artefacto.*
@@ -128,5 +129,33 @@ describe "Poder de pelea de rolando" {
         rolando.almacenar(collarDivino)
         //--------------------------------------
         assert.equals(19,rolando.poderDePelea())
+    }
+}
+
+describe "libro de hechisos" {
+    test "rolando usa sus hechisos en batalla y se van gastando hasta quedar sin ellos" {
+        rolando.cambiarPoderBase(5)
+        rolando.almacenar(libroDeHechisos)
+        castillo.agregarArtefactos(#{espadaDelDestino,armaduraDeAceroValyrio,collarDivino})
+        libroDeHechisos.almacenarHechisos([bendicion,invisibilidad,invocacion])
+        //-----------------------------------
+        assert.equals(4, libroDeHechisos.poder(rolando))
+        //----------------------------------------
+        rolando.batalla()//primera batalla
+        //----------------------------------------
+        assert.equals([invisibilidad,invocacion],libroDeHechisos.hechisos())
+        assert.equals(6, libroDeHechisos.poder(rolando))
+        //--------------------------------------
+        rolando.batalla()//segunda batalla
+        //---------------------------------------
+        assert.equals([invocacion],libroDeHechisos.hechisos())
+        assert.equals(7, libroDeHechisos.poder(rolando))
+        //------------------------------------------------
+        rolando.batalla()//tercera batalla
+        //----------------------------------------------
+        assert.equals([],libroDeHechisos.hechisos())
+        assert.equals(0,libroDeHechisos.poder(rolando))
+
+
     }
 }

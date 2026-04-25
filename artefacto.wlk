@@ -1,5 +1,6 @@
 import capos.*
 import castillo.*
+import hechisos.*
 
 
 
@@ -26,6 +27,31 @@ object espadaDelDestino {
 }
 
 object libroDeHechisos {
+    const hechisos = []
+
+    method poder(usuario) {
+        if(not(hechisos.isEmpty())){
+            const hechiso = self.hechisos().first()
+            return hechiso.poder(usuario)
+        }else{
+            return 0
+        }
+    }
+
+    method usar() {
+        const hechisoUsado = self.hechisos().first()
+        hechisos.remove(hechisoUsado)
+    }
+
+    method almacenarHechisos(_hechisos) {
+        hechisos.addAll(_hechisos) 
+    }
+
+
+    method hechisos() {
+        return hechisos
+    }
+
 
 }
 
