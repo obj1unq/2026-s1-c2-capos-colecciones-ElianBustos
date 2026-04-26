@@ -13,9 +13,13 @@ object espadaDelDestino {
             return  usuario.poderBase()
 
         }else{
-            return usuario.poderBase() / 2
+            return usuario.poderBase() / self.mitadDelPoder()
         }
 
+    }
+
+    method mitadDelPoder() {
+        return 2
     }
 
     method usar() {
@@ -34,8 +38,12 @@ object libroDeHechisos {
             const hechiso = self.hechisos().first()
             return hechiso.poder(usuario)
         }else{
-            return 0
+            return self.sinPoder()
         }
+    }
+
+    method sinPoder() {
+        return 0
     }
 
     method usar() {
@@ -59,11 +67,15 @@ object collarDivino {
     const poder = 3
     var usosEnBatalla = 0
     method poder(usuario) {
-        if(not (usuario.poderBase()> 6)){
+        if(self.esDebil(usuario)){
             return  poder
         }else{
             return poder + usosEnBatalla
         }
+    }
+
+    method esDebil(usuario) {
+        return not (usuario.poderBase()> 6)
     }
 
     method usar() {

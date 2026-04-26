@@ -1,5 +1,7 @@
 import capos.*
 import artefacto.*
+import enemigos.*
+
 
 
 // CASTILLO 
@@ -24,3 +26,5 @@ object castillo {
     
 
 }
+
+

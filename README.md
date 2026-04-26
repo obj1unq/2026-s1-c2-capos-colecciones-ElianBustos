@@ -159,7 +159,7 @@ la espada, la armadura y el collar (todo sin haber sido usado antes). Además, s
 ### 2.3 Enemigos
 
 En la tierra de Erethia existen 3 poderosos enemigos y de cada uno interesa saber su poder de pelea y su morada.
-
+ 
 - Caterina tiene 28 de poder de pelea y vive en la fortaleza de acero
 - Archibaldo tiene 16 de poder de pelea y vive en el palacio de mármol. 
 - Astra tiene 14 de poder pelea y vive en la torre de marfil

@@ -1,3 +1,4 @@
+import enemigos.*
 import castillo.*
 import artefacto.*
 
@@ -7,6 +8,7 @@ object rolando {
     var capacidadMaxima = 2
     const historial = []
     var poderBase = 5
+    const conquistado = []
     
 
 
@@ -32,12 +34,6 @@ object rolando {
             }
         }
 
-        // method verificarEspacio() {
-        //     if((mochila.size()> capacidadMaxima)){
-        //         self.error("capacidad de la mochila llena")
-        //     }
-        // }
-
             method historial() {
                 return historial
             }
@@ -57,7 +53,7 @@ object rolando {
             return hogar
         }
 
-    //1.3 Saber qué artefactos tiene Rolando y el castillo
+    // Saber qué artefactos tiene Rolando y el castillo
     method tieneEseArtefacto(_artefacto) {
         return self.artefactosQuePosee().contains(_artefacto)
     }
@@ -68,7 +64,7 @@ object rolando {
         return posesiones
     }
 
-    //### 2.1 Comportamiento de los artefactos
+    // Comportamiento de los artefactos
 
     method batalla() {
         mochila.forEach({artefacto => artefacto.usar()})
@@ -89,6 +85,39 @@ object rolando {
 
     method poderArtefacto() {
         return mochila.sum({artefacto => artefacto.poder(self)})
+    }
+
+    //enemigos
+
+    method puedeVencer(enemigo){
+        return self.poderDePelea() > enemigo.poderDePelea()
+    }
+
+    method conquistarMorada(enemigo) {
+        if(self.puedeVencer(enemigo)){
+            conquistado.add(enemigo.hogar())
+        }
+
+    }
+
+    method conquistado() {
+        return conquistado
+    }
+
+    //poderoso
+
+    method esPoderoso() {
+        return self.puedeVencer(archibaldo) && self.puedeVencer(astra) && self.puedeVencer(caterine)
+    }
+
+    //artefacto fatal
+
+    method hayArtefactoFatal(enemigo) {
+        return self.mochila().any({artefacto => artefacto.poder(self)>  enemigo.poderDePelea()}) 
+    }
+
+    method artefactoFatal(enemigo) {
+        return self.mochila().find({artefacto => artefacto.poder(self)>  enemigo.poderDePelea()})
     }
 
 }
