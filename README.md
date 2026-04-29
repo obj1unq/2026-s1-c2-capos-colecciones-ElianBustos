@@ -119,8 +119,11 @@ El poder de pelea de Rolando es el resultado de sumar su poder base (que inicial
 #### Ejemplo de batalla: 
 
 - Hacer que Rolando tenga 5 de base y capacidad de 3 artefactos. Entre sus artefactos se encuentran la *espada* (que le aporta 5), la *armadura* (aporta 6) y el *collar* (aporta 3).
+
 - Luego de la primer batalla Rolando tiene 6 de base, la espada (aporta 6/2 = 3), la armadura (aporta 6) y el collar (aporta 3)  
+
 - Luego de la segunda batalla Rolando tiene 7 de base, la espada (aporta 7/2 = 3.5), la armadura 6 y el collar (3+2=5)
+
 - Luego de la tercera batalla Rolando tiene 8 de base, la espada (aporta 8/2=4), la armadura 6 y el collar (3+3=6)
    
 #### Ejemplo de poder de pelea: 
@@ -156,7 +159,7 @@ la espada, la armadura y el collar (todo sin haber sido usado antes). Además, s
 ### 2.3 Enemigos
 
 En la tierra de Erethia existen 3 poderosos enemigos y de cada uno interesa saber su poder de pelea y su morada.
-
+ 
 - Caterina tiene 28 de poder de pelea y vive en la fortaleza de acero
 - Archibaldo tiene 16 de poder de pelea y vive en el palacio de mármol. 
 - Astra tiene 14 de poder pelea y vive en la torre de marfil

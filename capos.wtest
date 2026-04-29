@@ -1,0 +1,216 @@
+import erethia.*
+import enemigos.*
+import hechisos.*
+import capos.*
+import castillo.*
+import artefacto.*
+describe "Rolando mochila" {
+    test "Rolando guardando en la mochila" {
+            rolando.cambiarCapasidad(2) 
+            rolando.almacenar(espadaDelDestino)
+            assert.equals(#{espadaDelDestino} ,rolando.mochila())
+            //-------------------------------------
+            rolando.almacenar(libroDeHechisos)
+            assert.equals(#{espadaDelDestino,libroDeHechisos}, rolando.mochila())
+            //------------------------------------------------------------
+    }
+
+    test "rolando no puede almacenar"{
+        rolando.cambiarCapasidad(0)
+        rolando.almacenar(espadaDelDestino)
+        assert.equals(0, rolando.capacidadMaxima())
+
+    }
+}
+
+describe "Castillo y Rolando" {
+    test "Cuando Rolando llega a su casa, almacena todos sus artefactos" {
+
+            rolando.cambiarCapasidad(4)
+            rolando.almacenar(espadaDelDestino)
+            rolando.almacenar(libroDeHechisos)
+            rolando.almacenar(collarDivino)
+            rolando.almacenar(armaduraDeAceroValyrio)
+            assert.equals(#{espadaDelDestino,libroDeHechisos,collarDivino,armaduraDeAceroValyrio}, rolando.mochila())
+            //------------------------------------------
+            rolando.llegarCasa()
+            //-------------------------------------------
+            assert.equals(#{espadaDelDestino,libroDeHechisos,collarDivino,armaduraDeAceroValyrio}, castillo.artefactos())
+            assert.equals(#{}, rolando.mochila())
+
+    }
+}
+
+describe "artefactos de rolando y el castillo" {
+    test "saber que artefactos tiene reolando " {
+        castillo.agregarArtefactos(#{collarDivino,espadaDelDestino})
+        assert.equals(#{collarDivino,espadaDelDestino}, castillo.artefactos())
+        rolando.almacenar(armaduraDeAceroValyrio)
+        assert.equals(#{armaduraDeAceroValyrio}, rolando.mochila())
+        //----------------------------------------------------------
+        assert.equals(#{collarDivino,espadaDelDestino,armaduraDeAceroValyrio}, rolando.artefactosQuePosee())    
+    }
+}
+
+describe "historial de artefactos" {
+    test "historial de encontrar el artefactos" {
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(libroDeHechisos)
+        rolando.almacenar(collarDivino)
+        //------------------------------------------
+        assert.equals(#{espadaDelDestino,libroDeHechisos}, rolando.mochila())
+        assert.equals([espadaDelDestino,libroDeHechisos,collarDivino], rolando.historial())
+        //--------------------------------------------
+        rolando.llegarCasa()
+        assert.equals(#{espadaDelDestino,libroDeHechisos}, castillo.artefactos())
+        assert.equals(#{},rolando.mochila())
+        //------------------------------------------
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        assert.equals([espadaDelDestino,libroDeHechisos,collarDivino,armaduraDeAceroValyrio,collarDivino], rolando.historial())
+
+
+        
+
+    }
+
+}
+
+describe "Batallas de rolando" {
+    test "rolando tuvo 3 batallas" {
+        rolando.cambiarPoderBase(5)
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        assert.equals(#{espadaDelDestino,armaduraDeAceroValyrio,collarDivino}, rolando.mochila())
+    //-----------------------------------------------
+        rolando.batalla()
+    //-----------------------------------------------
+        assert.equals(6, rolando.poderBase())
+        assert.equals(3, espadaDelDestino.poder(rolando))
+        assert.equals(6, armaduraDeAceroValyrio.poder(rolando))
+        assert.equals(3, collarDivino.poder(rolando))
+    //-----------------------------------------------
+        rolando.batalla()
+    //-----------------------------------------------
+        assert.equals(7, rolando.poderBase())
+        assert.equals(3.5, espadaDelDestino.poder(rolando))
+        assert.equals(6, armaduraDeAceroValyrio.poder(rolando))
+        assert.equals(5, collarDivino.poder(rolando))
+    //------------------------------------------------
+        rolando.batalla()
+    //-----------------------------------------------
+        assert.equals(8, rolando.poderBase())
+        assert.equals(4, espadaDelDestino.poder(rolando))
+        assert.equals(6, armaduraDeAceroValyrio.poder(rolando))
+        assert.equals(6, collarDivino.poder(rolando))
+
+    }
+}
+
+describe "Poder de pelea de rolando" {
+    test "cuanto poder de pelea tiene sus artefactos mas de rolando" {
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        //--------------------------------------
+        assert.equals(19,rolando.poderDePelea())
+    }
+}
+
+describe "libro de hechisos" {
+    test "rolando usa sus hechisos en batalla y se van gastando hasta quedar sin ellos" {
+        rolando.cambiarPoderBase(5)
+        rolando.almacenar(libroDeHechisos)
+        castillo.agregarArtefactos(#{espadaDelDestino,armaduraDeAceroValyrio,collarDivino})
+        libroDeHechisos.almacenarHechisos([bendicion,invisibilidad,invocacion])
+        //-----------------------------------
+        assert.equals(4, libroDeHechisos.poder(rolando))
+        //----------------------------------------
+        rolando.batalla()//primera batalla
+        //----------------------------------------
+        assert.equals([invisibilidad,invocacion],libroDeHechisos.hechisos())
+        assert.equals(6, libroDeHechisos.poder(rolando))
+        //--------------------------------------
+        rolando.batalla()//segunda batalla
+        //---------------------------------------
+        assert.equals([invocacion],libroDeHechisos.hechisos())
+        assert.equals(7, libroDeHechisos.poder(rolando))
+        //------------------------------------------------
+        rolando.batalla()//tercera batalla
+        //----------------------------------------------
+        assert.equals([],libroDeHechisos.hechisos())
+        assert.equals(0,libroDeHechisos.poder(rolando))
+
+
+    }
+}
+
+describe "enemigos de rolando" {
+    test "rolando puede vencer a archibaldo y a astra" {
+        rolando.cambiarPoderBase(5)
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        assert.equals(19, rolando.poderDePelea())
+        //---------------------------------------
+        assert.that(rolando.puedeVencer(archibaldo))
+        assert.that(rolando.puedeVencer(astra))
+    }
+
+    test "rolando conquista las moradas de archibalod y astra" {
+        rolando.cambiarPoderBase(5)
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        assert.equals(19, rolando.poderDePelea())
+        //---------------------------------------
+        rolando.conquistarMorada(archibaldo)
+        rolando.conquistarMorada(astra)
+        //-----------------------------------
+        assert.equals([palacioDeMarmol,torreDeMarfil], rolando.conquistado())
+    }
+}
+
+describe "poderoso" {
+    test "rolando es capaz de derrotar a todos los enemigos" {
+        rolando.cambiarPoderBase(10)
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        //------------------------------
+        assert.that(rolando.esPoderoso([astra,archibaldo,caterine]))
+
+    }
+}
+
+
+
+describe "Artefacto fatal" {
+    test "ronaldo tiene un artefacto fatal que es la espada del destino y puede enfrentarse con astra" {
+        rolando.cambiarPoderBase(15)
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        //--------------------------------
+        assert.equals(espadaDelDestino,rolando.artefactoFatal(astra))
+        assert.that(rolando.hayArtefactoFatal(astra))
+
+    }
+
+    test "rolando no posee un artefacto fatal y no puede enfrentarse contra caterine" {
+        rolando.cambiarPoderBase(15)
+        rolando.cambiarCapasidad(3)
+        rolando.almacenar(espadaDelDestino)
+        rolando.almacenar(armaduraDeAceroValyrio)
+        rolando.almacenar(collarDivino)
+        //----------------------------------------
+        assert.notThat(rolando.hayArtefactoFatal(caterine))
+    }
+}
