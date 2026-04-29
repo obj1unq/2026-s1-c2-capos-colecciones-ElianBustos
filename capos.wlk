@@ -9,6 +9,7 @@ object rolando {
     const historial = []
     var poderBase = 5
     const conquistado = []
+
     
 
 
@@ -22,46 +23,52 @@ object rolando {
 
 
         method almacenar(_artefacto) {
-            self.almacenarArtefacto(_artefacto)
+            self.almacenarArtefactoSiHayEspacio(_artefacto)
             historial.add(_artefacto)
             
         }
 
-        method almacenarArtefacto(_artefacto) {
-            if(mochila.size()< capacidadMaxima){
+        method almacenarArtefactoSiHayEspacio(_artefacto) {
+            if(self.hayCapacidad()){
                 mochila.add(_artefacto)
         
             }
         }
 
+        method hayCapacidad() {
+            return mochila.size()< capacidadMaxima
+        }
             method historial() {
                 return historial
             }
 
     //castillo
 
-        method llegarCasa() {
-            hogar.almacenar(self.mochila())
-            mochila.clear()
-        }
+    method llegarCasa() {
+        hogar.almacenar(self.mochila())
+        mochila.clear()
+    }
         
-        method capacidadMaxima() {
-            return capacidadMaxima
-        }
-
-        method hogar() {
-            return hogar
-        }
-
-    // Saber qué artefactos tiene Rolando y el castillo
-    method tieneEseArtefacto(_artefacto) {
-        return self.artefactosQuePosee().contains(_artefacto)
+    method capacidadMaxima() {
+        return capacidadMaxima
     }
 
+    method hogar() {
+        return hogar
+    }
+
+    method artefactosDelHogar() {
+        return self.hogar().artefactos()
+    }
+
+
+    // Saber qué artefactos tiene Rolando y el castillo
     method artefactosQuePosee() {
-        const posesiones = self.mochila().copy()
-        posesiones.addAll(hogar.artefactos())
-        return posesiones
+        return mochila + hogar.artefactos()
+    }
+
+    method tieneEseArtefacto(_artefacto) {
+        return self.artefactosQuePosee().contains(_artefacto)
     }
 
     // Comportamiento de los artefactos
@@ -80,11 +87,15 @@ object rolando {
     }
 
     method poderDePelea() {
-        return poderBase + self.poderArtefacto()
+        return poderBase + self.poderArtefactos()
     }
 
-    method poderArtefacto() {
+    method poderArtefactos() {
         return mochila.sum({artefacto => artefacto.poder(self)})
+    }
+
+    method esDebil() {
+        return not (self.poderBase()> 6)
     }
 
     //enemigos
@@ -100,24 +111,33 @@ object rolando {
 
     }
 
+    method moradasQuePuedeConquistar(enemigos) {
+        return enemigos.filter({enemigo => self.puedeVencer(enemigo)}).map({enemigo => enemigo.hogar()})
+        
+    }
+
     method conquistado() {
         return conquistado
     }
 
     //poderoso
 
-    method esPoderoso() {
-        return self.puedeVencer(archibaldo) && self.puedeVencer(astra) && self.puedeVencer(caterine)
+    method esPoderoso(_enemigos) {
+        return self.puedeVencerATodos(_enemigos)
+    }
+
+    method puedeVencerATodos(_enemigos) {
+        return _enemigos.all({enemigo => self.puedeVencer(enemigo)})
     }
 
     //artefacto fatal
 
     method hayArtefactoFatal(enemigo) {
-        return self.mochila().any({artefacto => artefacto.poder(self)>  enemigo.poderDePelea()}) 
+        return self.mochila().any({artefacto => artefacto.esArtefactoFatal(self,enemigo)}) 
     }
 
     method artefactoFatal(enemigo) {
-        return self.mochila().find({artefacto => artefacto.poder(self)>  enemigo.poderDePelea()})
+        return self.mochila().find({artefacto => artefacto.esArtefactoFatal(self,enemigo)})
     }
 
 }
