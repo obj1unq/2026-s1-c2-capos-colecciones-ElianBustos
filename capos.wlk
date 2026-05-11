@@ -8,7 +8,7 @@ object rolando {
     var capacidadMaxima = 2
     const historial = []
     var poderBase = 5
-    const conquistado = []
+
 
     
 
@@ -58,18 +58,28 @@ object rolando {
     }
 
     method artefactosDelHogar() {
-        return self.hogar().artefactos()
+        return hogar.artefactos()
     }
 
+    method poderInvocacion() {
+        return hogar.poderDeArtefactoMasPoderoso(self)
+    }
 
     // Saber qué artefactos tiene Rolando y el castillo
-    method artefactosQuePosee() {
-        return mochila + hogar.artefactos()
-    }
+
 
     method tieneEseArtefacto(_artefacto) {
-        return self.artefactosQuePosee().contains(_artefacto)
+        return self.estaEnMochila(_artefacto) || self.estaEnHogar(_artefacto)
     }
+
+    method estaEnMochila(artefacto) {
+        return mochila.contains(artefacto)
+    }
+
+    method estaEnHogar(artefacto) {
+        return self.artefactosDelHogar().contains(artefacto)
+    }
+
 
     // Comportamiento de los artefactos
 
@@ -104,21 +114,17 @@ object rolando {
         return self.poderDePelea() > enemigo.poderDePelea()
     }
 
-    method conquistarMorada(enemigo) {
-        if(self.puedeVencer(enemigo)){
-            conquistado.add(enemigo.hogar())
-        }
-
-    }
 
     method moradasQuePuedeConquistar(enemigos) {
-        return enemigos.filter({enemigo => self.puedeVencer(enemigo)}).map({enemigo => enemigo.hogar()})
+        return self.enemigosQuePuedoVencer(enemigos).map({enemigo => enemigo.hogar()}).asSet()
         
     }
 
-    method conquistado() {
-        return conquistado
+    method enemigosQuePuedoVencer(enemigos) {
+        return enemigos.filter({enemigo => self.puedeVencer(enemigo)})
     }
+
+
 
     //poderoso
 
@@ -133,11 +139,11 @@ object rolando {
     //artefacto fatal
 
     method hayArtefactoFatal(enemigo) {
-        return self.mochila().any({artefacto => artefacto.esArtefactoFatal(self,enemigo)}) 
+        return mochila.any({artefacto => artefacto.esArtefactoFatal(self,enemigo)}) 
     }
 
     method artefactoFatal(enemigo) {
-        return self.mochila().find({artefacto => artefacto.esArtefactoFatal(self,enemigo)})
+        return mochila.find({artefacto => artefacto.esArtefactoFatal(self,enemigo)})
     }
 
 }

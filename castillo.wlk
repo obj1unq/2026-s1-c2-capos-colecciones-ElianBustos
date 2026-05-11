@@ -23,6 +23,14 @@ object castillo {
             almacenamiento.addAll(_artefactos) 
         }
 
+        method poderDeArtefactoMasPoderoso(usuario) {
+            return self.artefactoMasPoderoso(usuario).max()
+        }
+
+        method artefactoMasPoderoso(usuario) {
+            return almacenamiento.map({artefacto=> artefacto.poder(usuario)})
+        }
+
     
 
 }

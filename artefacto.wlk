@@ -14,11 +14,11 @@ object espadaDelDestino {
     }
 
     method poderDependiendoElUso(usuario) {
-        if(usosDeEspada == 0){
-            return  usuario.poderBase()
+        return if(usosDeEspada == 0){
+            usuario.poderBase()
 
         }else{
-            return self.mitadDelPoder(usuario)
+            self.mitadDelPoder(usuario)
         }
     }
 
@@ -44,12 +44,20 @@ object libroDeHechisos {
     }
 
     method poderDeHechisosSiHay(usuario) {
-        if(not(hechisos.isEmpty())){
-            const hechiso = self.hechisos().first()
-            return hechiso.poder(usuario)
+        return  if(self.hechisosEsVacio()){
+            self.poderDelPrimerHechiso(usuario)
         }else{
-            return self.sinPoder()
+            self.sinPoder()
         }
+    }
+
+    method poderDelPrimerHechiso(usuario) {
+        return hechisos.first().poder(usuario)
+    }
+
+
+    method hechisosEsVacio() {
+        return not(hechisos.isEmpty())
     }
 
     method sinPoder() {
@@ -83,10 +91,10 @@ object collarDivino {
     }
 
     method poderExtraSiNoEsDebil(usuario) {
-        if(usuario.esDebil()){
-            return self.sinPoder()
+        return if(usuario.esDebil()){
+            self.sinPoder()
         }else{
-            return usosEnBatalla
+            usosEnBatalla
         }
     }
 

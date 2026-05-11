@@ -48,7 +48,8 @@ describe "artefactos de rolando y el castillo" {
         rolando.almacenar(armaduraDeAceroValyrio)
         assert.equals(#{armaduraDeAceroValyrio}, rolando.mochila())
         //----------------------------------------------------------
-        assert.equals(#{collarDivino,espadaDelDestino,armaduraDeAceroValyrio}, rolando.artefactosQuePosee())    
+        assert.that(rolando.tieneEseArtefacto(armaduraDeAceroValyrio))
+        assert.notThat(rolando.tieneEseArtefacto(libroDeHechisos))
     }
 }
 
@@ -161,18 +162,15 @@ describe "enemigos de rolando" {
         assert.that(rolando.puedeVencer(astra))
     }
 
-    test "rolando conquista las moradas de archibalod y astra" {
+    test "rolando conquista las moradas de archibaldo y astra" {
         rolando.cambiarPoderBase(5)
         rolando.cambiarCapasidad(3)
         rolando.almacenar(espadaDelDestino)
         rolando.almacenar(armaduraDeAceroValyrio)
         rolando.almacenar(collarDivino)
         assert.equals(19, rolando.poderDePelea())
-        //---------------------------------------
-        rolando.conquistarMorada(archibaldo)
-        rolando.conquistarMorada(astra)
         //-----------------------------------
-        assert.equals([palacioDeMarmol,torreDeMarfil], rolando.conquistado())
+        assert.equals(#{palacioDeMarmol,torreDeMarfil}, rolando.moradasQuePuedeConquistar(#{archibaldo,astra}))
     }
 }
 

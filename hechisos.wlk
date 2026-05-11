@@ -16,7 +16,7 @@ object invisibilidad {
 
 object invocacion {
     method poder(usuario) {
-        return usuario.artefactosDelHogar().map({artefacto=> artefacto.poder(usuario)}).max()
+        return usuario.poderInvocacion()
     }
 
 }
